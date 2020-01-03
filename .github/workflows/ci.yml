@@ -1,0 +1,24 @@
+name: GitHub CI
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Build vmlinuz
+        run: sudo /bin/bash githubci/build.sh
+
+      - name: Install ffsend
+        run: |
+          ffsend_ver="$(curl -skL https://api.github.com/repos/timvisee/ffsend/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
+          curl -skL -o /tmp/ffsend https://github.com/timvisee/ffsend/releases/download/"$ffsend_ver"/ffsend-"$ffsend_ver"-linux-x64-static
+          chmod +x /tmp/ffsend
+
+      - name: Push to Firefox Send
+        run: /tmp/ffsend  -Ifyq upload /tmp/vmlinuz
