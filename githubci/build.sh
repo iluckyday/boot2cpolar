@@ -4,7 +4,7 @@ set -e
 DEBIAN_FRONTEND=noninteractive apt-get -qq update
 DEBIAN_FRONTEND=noninteractive apt-get install -y bison flex libelf-dev busybox-static 2>&1 >/dev/null
 
-DEST=$(pwd)
+DEST=$(mktemp -d)
 INITRD=$DEST/initramfs
 [ -d $DEST ] && rm -rf $DEST
 mkdir -p $INITRD/etc $INITRD/bin $INITRD/lib $INITRD/usr/share/terminfo/x
@@ -55,10 +55,10 @@ EOF
 
 chmod +x init
 
-cd $DEST
-ls -la
-export KCONFIG_ALLCONFIG=./githubci/kernel.config
+export KCONFIG_ALLCONFIG=$HOME/work/boot2cpolar/boot2cpolar/githubci/kernel.config
 sed -i "s@CONFIG_INITRAMFS_SOURCE=@CONFIG_INITRAMFS_SOURCE=\"$INITRD\"@" "$KCONFIG_ALLCONFIG"
+
+cd $DEST
 wget -q $(wget -qO- https://www.kernel.org | grep downloadarrow_small.png | cut -d'"' -f2)
 tar -xf linux-*.tar.xz
 cd $(ls -d linux-*/)
