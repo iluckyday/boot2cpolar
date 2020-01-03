@@ -56,6 +56,7 @@ EOF
 chmod +x init
 
 cd $DEST
+ls -la
 export KCONFIG_ALLCONFIG=./githubci/kernel.config
 sed -i "s@CONFIG_INITRAMFS_SOURCE=@CONFIG_INITRAMFS_SOURCE=\"$INITRD\"@" "$KCONFIG_ALLCONFIG"
 wget -q $(wget -qO- https://www.kernel.org | grep downloadarrow_small.png | cut -d'"' -f2)
