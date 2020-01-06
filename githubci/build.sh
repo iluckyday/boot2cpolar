@@ -26,7 +26,7 @@ cat << EOF > etc/hosts
 EOF
 
 cat > init <<"EOF"
-#!/bin/busybox sh
+#!/bin/busybox sh -x
 busybox mkdir -p /dev/net /dev/pts /proc /sys /etc
 busybox mount -t proc proc /proc
 mount -t sysfs sysfs /sys
