@@ -7,7 +7,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y bison flex libelf-dev busybox-
 DEST=$(mktemp -d)
 INITRD=$DEST/initramfs
 [ -d $DEST ] && rm -rf $DEST
-mkdir -p $INITRD/etc $INITRD/bin $INITRD/lib $INITRD/usr/share/terminfo/x
+mkdir -p $INITRD/etc $INITRD/bin $INITRD/lib
 
 cd $INITRD
 
