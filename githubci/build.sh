@@ -1,18 +1,18 @@
 #!/bin/bash
 set -e
 
-DEBIAN_FRONTEND=noninteractive apt-get -qq update
-DEBIAN_FRONTEND=noninteractive apt-get install -y bison flex libelf-dev busybox-static 2>&1 >/dev/null
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install -y bison flex libelf-dev busybox-static
 
 DEST=$(mktemp -d)
 INITRD=$DEST/initramfs
 [ -d $DEST ] && rm -rf $DEST
-mkdir -p $INITRD/etc $INITRD/bin $INITRD/lib
+mkdir -p $INITRD/etc $INITRD/bin $INITRD/lib $INITRD/usr/share/terminfo/x
 
 cd $INITRD
 
 cp -f /bin/busybox $INITRD/bin/
-#cp -f /usr/share/terminfo/x/xterm $INITRD/usr/share/terminfo/x/
+cp -f /lib/terminfo/x/xterm $INITRD/usr/share/terminfo/x/
 #cp -f /lib/x86_64-linux-gnu/libnss_files-2.27.so $INITRD/lib/
 
 curl -skL https://www.cpolar.com/static/downloads/cpolar-stable-linux-amd64.zip -o /tmp/cpolar.zip
@@ -26,9 +26,10 @@ cat << EOF > etc/hosts
 EOF
 
 cat > init <<"EOF"
-#!/bin/busybox sh -x
+#!/bin/busybox
 busybox mkdir -p /dev/net /dev/pts /proc /sys /etc
 busybox mount -t proc proc /proc
+set -x
 mount -t sysfs sysfs /sys
 mount -t devpts devpts /dev/pts
 cd /bin && ln -s busybox sh
