@@ -63,6 +63,7 @@ cd $DEST
 wget -q $(wget -qO- https://www.kernel.org | grep downloadarrow_small.png | cut -d'"' -f2)
 tar -xf linux-*.tar.xz
 cd $(ls -d linux-*/)
-make -s -j"$(nproc)" allnoconfig
+#make -s -j"$(nproc)" allnoconfig
+make -s -j"$(nproc)" defconfig
 make -s -j"$(nproc)" bzImage
 cp "$(make -s image_name)" "/tmp/vmlinuz"
