@@ -13,7 +13,7 @@ cd $INITRD
 
 cp -f /bin/busybox $INITRD/bin/
 cp -f /lib/terminfo/x/xterm $INITRD/usr/share/terminfo/x/
-#cp -f /lib/x86_64-linux-gnu/libnss_files-2.27.so $INITRD/lib/
+cp -f /lib/x86_64-linux-gnu/libnss_files-2.27.so $INITRD/lib/
 
 curl -skL https://www.cpolar.com/static/downloads/cpolar-stable-linux-amd64.zip -o /tmp/cpolar.zip
 unzip /tmp/cpolar.zip -d bin
@@ -64,6 +64,6 @@ wget -q $(wget -qO- https://www.kernel.org | grep downloadarrow_small.png | cut 
 tar -xf linux-*.tar.xz
 cd $(ls -d linux-*/)
 make -s -j"$(nproc)" allnoconfig
-sed -i /CONFIG_INITRAMFS_SOURCE/d .config
+sed -i '/CONFIG_INITRAMFS_SOURCE/d' .config
 make -s -j"$(nproc)" bzImage
 cp "$(make -s image_name)" "/tmp/vmlinuz"
