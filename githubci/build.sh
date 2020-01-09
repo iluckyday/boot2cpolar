@@ -57,7 +57,7 @@ EOF
 chmod +x init
 
 export KCONFIG_ALLCONFIG=$HOME/work/boot2cpolar/boot2cpolar/githubci/kernel.config
-sed -i "s@CONFIG_INITRAMFS_SOURCE=@CONFIG_INITRAMFS_SOURCE=\"$INITRD\"" "$KCONFIG_ALLCONFIG"
+sed -i "s@CONFIG_INITRAMFS_SOURCE=@CONFIG_INITRAMFS_SOURCE=\"$INITRD\"@" "$KCONFIG_ALLCONFIG"
 
 cd $DEST
 wget -q $(wget -qO- https://www.kernel.org | grep downloadarrow_small.png | cut -d'"' -f2)
