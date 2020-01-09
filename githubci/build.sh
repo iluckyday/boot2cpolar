@@ -58,6 +58,7 @@ chmod +x init
 
 export KCONFIG_ALLCONFIG=$HOME/work/boot2cpolar/boot2cpolar/githubci/kernel.config
 sed -i "s@CONFIG_INITRAMFS_SOURCE=@CONFIG_INITRAMFS_SOURCE=\"$INITRD\"@" "$KCONFIG_ALLCONFIG"
+cat "$KCONFIG_ALLCONFIG"
 
 cd $DEST
 wget -q $(wget -qO- https://www.kernel.org | grep downloadarrow_small.png | cut -d'"' -f2)
@@ -65,5 +66,6 @@ tar -xf linux-*.tar.xz
 cd $(ls -d linux-*/)
 make -s -j"$(nproc)" tinyconfig
 sed -i /CONFIG_INITRAMFS_SOURCE/d .config
+cat .config
 make -s -j"$(nproc)" bzImage
 cp "$(make -s image_name)" "/tmp/vmlinuz"
