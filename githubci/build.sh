@@ -51,6 +51,8 @@ tunnels:
     addr: 10.0.2.10:1024
     proto: tcp
 CPOLAR
+ifconfig
+cat /etc/cpolar.yml
 /bin/cpolar start-all -config /etc/cpolar.yml
 EOF
 
