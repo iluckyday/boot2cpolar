@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ex
 
 pacman --noconfirm -Sy busybox libisoburn syslinux curl tar grep unzip cpio coreutils xz findutils gzip >/dev/null 2>&1
 
