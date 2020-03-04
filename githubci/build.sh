@@ -7,13 +7,14 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y bison flex libelf-dev busybox-
 DEST=$(mktemp -d)
 INITRD=$DEST/initramfs
 [ -d $DEST ] && rm -rf $DEST
-mkdir -p $INITRD/etc $INITRD/bin $INITRD/lib $INITRD/usr/share/terminfo/x
+mkdir -p $INITRD/etc $INITRD/bin $INITRD/lib/terminfo/x $INITRD/usr/share/terminfo/x
 
 cd $INITRD
 
 cp -f /bin/busybox $INITRD/bin/
 cp -f /lib/terminfo/x/xterm $INITRD/usr/share/terminfo/x/
-cp -f /lib/x86_64-linux-gnu/libnss_files-2.27.so $INITRD/lib/
+cp -f /lib/terminfo/x/xterm $INITRD/lib/terminfo/x/
+cp -f /lib/x86_64-linux-gnu/libnss_files.so.* $INITRD/lib/
 
 curl -skL https://www.cpolar.com/static/downloads/cpolar-stable-linux-amd64.zip -o /tmp/cpolar.zip
 unzip /tmp/cpolar.zip -d bin
@@ -29,11 +30,9 @@ cat > init <<"EOF"
 #!/bin/busybox
 busybox mkdir -p /dev/net /dev/pts /proc /sys /etc
 busybox mount -t proc proc /proc
-set -x
 mount -t sysfs sysfs /sys
 mount -t devpts devpts /dev/pts
 cd /bin && ln -s busybox sh
-modprobe e1000
 mdev -s
 ifconfig lo 127.0.0.1 netmask 255.0.0.0 up
 ifconfig eth0 up
