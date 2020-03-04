@@ -1,6 +1,6 @@
 FROM archlinux as builder
 
-COPY build.sh /tmp/
+COPY dockerhub/build.sh /tmp/
 RUN chmod +x /tmp/build.sh
 RUN /tmp/build.sh
 
