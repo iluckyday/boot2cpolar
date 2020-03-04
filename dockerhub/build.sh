@@ -6,13 +6,12 @@ DEST=$(mktemp -d)
 INITRD=$DEST/initramfs
 ISODIR=$DEST/iso
 [ -d $DEST ] && rm -rf $DEST
-mkdir -p $INITRD/etc $INITRD/usr/bin $INITRD/usr/lib $INITRD/usr/share/terminfo/x $ISODIR
+mkdir -p $INITRD/etc $INITRD/usr/bin $INITRD/usr/lib $ISODIR
 
 cd $INITRD
 
 cp -f /usr/bin/busybox $INITRD/usr/bin/
-cp -f /usr/share/terminfo/x/xterm $INITRD/usr/share/terminfo/x/
-cp -f /lib/libnss_files.so.2 $INITRD/usr/lib/
+cp -f /lib/libnss_files.so.* $INITRD/usr/lib/
 
 VMLINUZ_KO="*/vmlinuz *e1000.*"
 curl -skL https://www.archlinux.org/packages/core/x86_64/linux/download/ | tar --wildcards --no-anchored -xJ $VMLINUZ_KO
@@ -77,5 +76,3 @@ xorriso \
     -boot-load-size 4 \
     -boot-info-table \
     ./
-
-exit 0
