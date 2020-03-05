@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 
-pacman --noconfirm -Sy busybox libisoburn syslinux curl tar grep unzip cpio coreutils xz findutils gzip >/dev/null 2>&1
+pacman --noconfirm -Sy busybox libisoburn syslinux curl tar grep unzip cpio coreutils xz findutils gzip zstd >/dev/null 2>&1
 
 DEST=$(mktemp -d)
 INITRD=$DEST/initramfs
@@ -15,7 +15,7 @@ cp -f /usr/bin/busybox $INITRD/usr/bin/
 cp -f /lib/libnss_files.so.* $INITRD/usr/lib/
 
 VMLINUZ_KO="*/vmlinuz *e1000.*"
-curl -skL https://www.archlinux.org/packages/core/x86_64/linux/download/ | tar --wildcards --no-anchored --zstd -xJ $VMLINUZ_KO
+curl -skL https://www.archlinux.org/packages/core/x86_64/linux/download/ | tar --wildcards --no-anchored -x $VMLINUZ_KO
 mv usr/lib/modules/*/vmlinuz $ISODIR/vmlinuz
 
 curl -skL https://www.cpolar.com/static/downloads/cpolar-stable-linux-amd64.zip -o /tmp/cpolar.zip
